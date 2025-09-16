@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>忘记密码 - 账户安全</title>
+  <!-- 引入Layui CSS -->
+ <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css">
+ <!-- 引入Font Awesome -->
+ <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.css">
+  <style>
+    body {
+      background-color: #f5f7fa;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .forgot-container {
+      width: 100%;
+      max-width: 420px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+    
+    .forgot-header {
+      padding: 24px 30px;
+      background-color: #1E9FFF;
+      color: #fff;
+      text-align: center;
+    }
+    
+    .forgot-header h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    
+    .forgot-body {
+      padding: 30px;
+    }
+    
+    .step-content {
+      display: none;
+    }
+    
+    .step-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .step-indicator {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    
+    .step-indicator::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      background-color: #e6e6e6;
+      z-index: 1;
+    }
+    
+    .step-item {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      width: 33.333%;
+    }
+    
+    .step-item .step-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: #e6e6e6;
+      color: #999;
+      line-height: 32px;
+      margin: 0 auto 8px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    .step-item .step-title {
+      font-size: 12px;
+      color: #999;
+      transition: all 0.3s ease;
+    }
+    
+    .step-item.active .step-number {
+      background-color: #1E9FFF;
+      color: #fff;
+    }
+    
+    .step-item.active .step-title {
+      color: #1E9FFF;
+      font-weight: 500;
+    }
+    
+    .step-item.completed .step-number {
+      background-color: #52c41a;
+      color: #fff;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .layui-form-label {
+      width: 70px;
+      padding-left: 0;
+    }
+    
+    .layui-input-block {
+      margin-left: 100px;
+    }
+    
+    .send-code-btn {
+      width: 110px;
+    }
+    
+    .countdown {
+      pointer-events: none;
+      background-color: #f5f5f5;
+      color: #999;
+    }
+    
+    .action-buttons {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .layui-btn {
+      padding: 0 25px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 14px;
+    }
+    
+    .success-icon {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .success-icon i {
+      font-size: 60px;
+      color: #52c41a;
+    }
+    
+    .success-message {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .success-message h3 {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    
+    .success-message p {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+      .layui-form-label {
+        width: 60px;
+      }
+      
+      .layui-input-block {
+        margin-left: 80px;
+      }
+      
+      .send-code-btn {
+        width: 90px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="forgot-container">
+    <div class="forgot-header">
+      <h2>找回密码</h2>
+    </div>
+    
+    <div class="forgot-body">
+      <!-- 步骤指示器 -->
+      <div class="step-indicator">
+        <div class="step-item active" data-step="1">
+          <div class="step-number">1</div>
+          <div class="step-title">验证身份</div>
+        </div>
+        <div class="step-item" data-step="2">
+          <div class="step-number">2</div>
+          <div class="step-title">验证邮箱</div>
+        </div>
+        <div class="step-item" data-step="3">
+          <div class="step-number">3</div>
+          <div class="step-title">设置新密码</div>
+        </div>
+      </div>
+      
+      <!-- 步骤1：验证身份 -->
+      <div class="step-content active" id="step1">
+        <form class="layui-form" lay-filter="step1Form">
+          <div class="form-group">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+              <input type="text" name="username" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-block">
+              <input type="email" name="email" lay-verify="required|email" placeholder="请输入注册邮箱" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          
+          <div class="action-buttons">
+            <div></div>
+            <button class="layui-btn layui-btn-primary" type="button" id="toStep2">下一步</button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- 步骤2：验证邮箱 -->
+      <div class="step-content" id="step2">
+        <form class="layui-form" lay-filter="step2Form">
+          <div class="form-group">
+            <label class="layui-form-label">验证码</label>
+            <div class="layui-input-block">
+              <div class="layui-input-inline" style="width: calc(100% - 120px);">
+                <input type="text" name="verifyCode" lay-verify="required" placeholder="请输入邮箱验证码" autocomplete="off" class="layui-input">
+              </div>
+              <button type="button" class="layui-btn layui-btn-primary send-code-btn" id="sendCodeBtn">发送验证码</button>
+            </div>
+          </div>
+          
+          <p class="layui-text layui-text-danger" style="font-size: 12px; margin-top: -10px;">
+            验证码已发送至您的邮箱，请注意查收，有效期10分钟
+          </p>
+          
+          <div class="action-buttons">
+            <button class="layui-btn layui-btn-normal" type="button" id="backToStep1">上一步</button>
+            <button class="layui-btn layui-btn-primary" type="button" id="toStep3">下一步</button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- 步骤3：设置新密码 -->
+      <div class="step-content" id="step3">
+        <form class="layui-form" lay-filter="step3Form">
+          <div class="form-group">
+            <label class="layui-form-label">新密码</label>
+            <div class="layui-input-block">
+              <input type="password" name="newPassword" lay-verify="required|pass" placeholder="请输入新密码" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="layui-form-label">确认密码</label>
+            <div class="layui-input-block">
+              <input type="password" name="confirmPassword" lay-verify="required|pass|confirmPassword" placeholder="请再次输入新密码" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          
+          <div class="action-buttons">
+            <button class="layui-btn layui-btn-normal" type="button" id="backToStep2">上一步</button>
+            <button class="layui-btn layui-btn-primary" type="button" id="submitReset">确认重置</button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- 成功页面 -->
+      <div class="step-content" id="success">
+        <div class="success-icon">
+          <i class="fa fa-check-circle"></i>
+        </div>
+        <div class="success-message">
+          <h3>密码重置成功！</h3>
+          <p>您的密码已成功重置，请使用新密码登录</p>
+        </div>
+        <div class="action-buttons" style="justify-content: center;">
+          <button class="layui-btn layui-btn-primary" type="button" id="toLogin">返回登录</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入Layui JS -->
+ <script src="../lib/layui-v2.6.3/layui.js"></script>
+  <script>
+    layui.use(['form', 'layer'], function() {
+      var form = layui.form;
+      var layer = layui.layer;
+      var $ = layui.$;
+      
+      // 自定义验证规则
+      form.verify({
+        pass: [
+          /^[\S]{6,16}$/
+          ,'密码必须6到16位，且不能出现空格'
+        ]
+        ,confirmPassword: function(value) {
+          var password = $("input[name='newPassword']").val();
+          if (value !== password) {
+            return '两次输入的密码不一致';
+          }
+        }
+      });
+      
+      // 步骤切换函数
+      function goToStep(step) {
+        // 隐藏所有步骤
+        $('.step-content').removeClass('active');
+        // 显示目标步骤
+        $('#step' + step).addClass('active');
+        
+        // 更新步骤指示器
+        $('.step-item').removeClass('active');
+        $('.step-item').each(function(index, item) {
+          var itemStep = parseInt($(item).data('step'));
+          if (itemStep < step) {
+            $(item).addClass('completed');
+          } else if (itemStep === step) {
+            $(item).addClass('active');
+          } else {
+            $(item).removeClass('completed');
+          }
+        });
+      }
+      
+      // 下一步按钮事件
+      $('#toStep2').click(function() {
+        form.validate('step1Form', function(data, elem) {
+          if (data) {
+            goToStep(2);
+          }
+        });
+      });
+      
+      $('#toStep3').click(function() {
+        form.validate('step2Form', function(data, elem) {
+          if (data) {
+            goToStep(3);
+          }
+        });
+      });
+      
+      // 上一步按钮事件
+      $('#backToStep1').click(function() {
+        goToStep(1);
+      });
+      
+      $('#backToStep2').click(function() {
+        goToStep(2);
+      });
+      
+      // 发送验证码按钮事件
+      var countdown = 60;
+      $('#sendCodeBtn').click(function() {
+        var email = $("input[name='email']").val();
+        if (!email) {
+          layer.tips('请先填写邮箱', $("input[name='email']"), {
+            tips: [1, '#FF5722']
+          });
+          return;
+        }
+        
+        var btn = $(this);
+        btn.addClass('countdown');
+        btn.text('重新发送(' + countdown + ')');
+        
+        // 模拟发送验证码
+        layer.msg('验证码已发送至您的邮箱，请注意查收', {icon: 1});
+        
+        var timer = setInterval(function() {
+          countdown--;
+          btn.text('重新发送(' + countdown + ')');
+          
+          if (countdown <= 0) {
+            clearInterval(timer);
+            btn.removeClass('countdown');
+            btn.text('发送验证码');
+            countdown = 60;
+          }
+        }, 1000);
+      });
+      
+      // 确认重置按钮事件
+      $('#submitReset').click(function() {
+        form.validate('step3Form', function(data, elem) {
+          if (data) {
+            // 模拟密码重置请求
+            layer.load(2);
+            setTimeout(function() {
+              layer.closeAll('loading');
+              // 隐藏所有步骤，显示成功页面
+              $('.step-content').removeClass('active');
+              $('#success').addClass('active');
+            }, 1500);
+          }
+        });
+      });
+      
+      // 返回登录按钮事件
+      $('#toLogin').click(function() {
+        layer.msg('跳转到登录页面', {icon: 1});
+        // 实际应用中这里应该是跳转到登录页面的代码
+         window.location.href = 'dengli.html';
+      });
+    });
+  </script>
+</body>
+</html>

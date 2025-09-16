@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理员中心 - 数据管理</title>
+  <!-- 引入Layui CSS -->
+  <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css">
+  <!-- 引入Font Awesome -->
+  <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.css">
+  <style>
+    body {
+      background-color: #f2f3f5;
+      margin: 0;
+      padding: 20px;
+    }
+    .page-title {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e6e6e6;
+    }
+    .layui-card {
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+    }
+    .layui-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .stats-card .layui-card-body {
+      padding: 20px 15px;
+      text-align: center;
+    }
+    .stats-card .stats-value {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    .stats-card .stats-desc {
+      color: #666;
+      font-size: 14px;
+    }
+    .stats-card .stats-icon {
+      font-size: 30px;
+    }
+    .layui-breadcrumb {
+      margin: 15px 0;
+    }
+    .layui-table td, .layui-table th {
+      text-align: center;
+    }
+    .layui-progress {
+      margin: 10px 0;
+    }
+    .layui-elem-quote {
+      border-left-color: #1890ff;
+    }
+    .layui-timeline-item:last-child::before {
+      height: 0;
+    }
+    .layui-btn {
+      background-color: #1890ff;
+    }
+    .layui-btn-primary:hover {
+      border-color: #1890ff;
+      color: #1890ff;
+    }
+    .chart-container {
+      height: 300px;
+      width: 100%;
+      position: relative;
+    }
+    .chart-loading {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+    .user-profile {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .user-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-right: 15px;
+    }
+    .user-info h3 {
+      margin: 0 0 5px 0;
+    }
+    .user-info p {
+      margin: 0;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <!-- 用户信息头部 -->
+  <div class="user-profile">
+    <img src="https://picsum.photos/id/1005/60/60" alt="管理员头像" class="user-avatar">
+    <div class="user-info">
+      <h3>张晓明（超级管理员）</h3>
+      <p>最后登录：2023-06-15 09:23:45</p>
+    </div>
+    <div style="margin-left: auto;">
+      <button class="layui-btn"><i class="fa fa-sign-out"></i> 退出</button>
+    </div>
+  </div>
+  
+  <!-- 页面标题 -->
+  <h2 class="page-title"><i class="fa fa-dashboard"></i> 管理员中心</h2>
+  
+  <!-- 面包屑导航 -->
+  <div class="layui-breadcrumb" lay-separator="/">
+    <a href="javascript:;">首页</a>
+    <a href="javascript:;">控制台</a>
+    <a><cite>数据概览</cite></a>
+  </div>
+  
+  <!-- 数据统计卡片 -->
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md3">
+      <div class="layui-card stats-card">
+        <div class="layui-card-body">
+          <div class="stats-icon" style="color: #1890ff;"><i class="fa fa-users"></i></div>
+          <div class="stats-value">12,548</div>
+          <div class="stats-desc">总用户数</div>
+          <div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="userProgress">
+            <div class="layui-progress-bar" lay-percent="85%" style="background-color: #1890ff;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-md3">
+      <div class="layui-card stats-card">
+        <div class="layui-card-body">
+          <div class="stats-icon" style="color: #52c41a;"><i class="fa fa-file-text-o"></i></div>
+          <div class="stats-value">3,876</div>
+          <div class="stats-desc">文章总数</div>
+          <div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="articleProgress">
+            <div class="layui-progress-bar" lay-percent="65%" style="background-color: #52c41a;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-md3">
+      <div class="layui-card stats-card">
+        <div class="layui-card-body">
+          <div class="stats-icon" style="color: #faad14;"><i class="fa fa-shopping-cart"></i></div>
+          <div class="stats-value">9,234</div>
+          <div class="stats-desc">订单总数</div>
+          <div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="orderProgress">
+            <div class="layui-progress-bar" lay-percent="78%" style="background-color: #faad14;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-md3">
+      <div class="layui-card stats-card">
+        <div class="layui-card-body">
+          <div class="stats-icon" style="color: #ff4d4f;"><i class="fa fa-eye"></i></div>
+          <div class="stats-value">156,892</div>
+          <div class="stats-desc">总访问量</div>
+          <div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="viewProgress">
+            <div class="layui-progress-bar" lay-percent="92%" style="background-color: #ff4d4f;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 图表和数据表格区域 -->
+  <div class="layui-row layui-col-space15">
+    <!-- 左侧图表 -->
+    <div class="layui-col-md8">
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <h3><i class="fa fa-line-chart"></i> 数据趋势分析</h3>
+        </div>
+        <div class="layui-card-body layui-row layui-col-space15">
+          <div class="chart-container layui-col-xs12 layui-col-md9" id="mainChart">
+            <!-- 图表加载提示 -->
+            <div class="chart-loading" id="chartLoading">
+              <i class="layui-icon layui-icon-loading layui-icon-loading-1" style="font-size: 30px;"></i>
+              <span style="margin-left: 10px;">图表加载中...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 最近订单表格 -->
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <div class="layui-row">
+            <div class="layui-col-md6">
+              <h3><i class="fa fa-list-alt"></i> 最近订单</h3>
+            </div>
+            <div class="layui-col-md6 text-right">
+              <a href="../dd/ddlb.html" class="layui-btn layui-btn-primary">查看全部</a>
+            </div>
+          </div>
+        </div>
+        <div class="layui-card-body">
+          <table class="layui-table" lay-size="sm">
+            <thead>
+              <tr>
+                <th>订单ID</th>
+                <th>用户</th>
+                <th>金额</th>
+                <th>状态</th>
+                <th>时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ORD-2023-8765</td>
+                <td>张三</td>
+                <td>¥299.00</td>
+                <td><span class="layui-badge layui-bg-green">已完成</span></td>
+                <td>2023-06-15 14:30</td>
+                <td>
+                  <button class="layui-btn layui-btn-xs">详情</button>
+                </td>
+              </tr>
+              <tr>
+                <td>ORD-2023-8764</td>
+                <td>李四</td>
+                <td>¥159.00</td>
+                <td><span class="layui-badge layui-bg-blue">处理中</span></td>
+                <td>2023-06-15 13:45</td>
+                <td>
+                  <button class="layui-btn layui-btn-xs">详情</button>
+                </td>
+              </tr>
+              <tr>
+                <td>ORD-2023-8763</td>
+                <td>王五</td>
+                <td>¥599.00</td>
+                <td><span class="layui-badge layui-bg-yellow">待支付</span></td>
+                <td>2023-06-15 11:20</td>
+                <td>
+                  <button class="layui-btn layui-btn-xs">详情</button>
+                </td>
+              </tr>
+              <tr>
+                <td>ORD-2023-8762</td>
+                <td>赵六</td>
+                <td>¥89.00</td>
+                <td><span class="layui-badge layui-bg-red">已取消</span></td>
+                <td>2023-06-15 10:15</td>
+                <td>
+                  <button class="layui-btn layui-btn-xs">详情</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 右侧信息 -->
+    <div class="layui-col-md4">
+      <!-- 最近活动 -->
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <h3><i class="fa fa-history"></i> 最近活动</h3>
+        </div>
+        <div class="layui-card-body">
+          <ul class="layui-timeline">
+            <li class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis"></i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">2023-06-15 15:30</h3>
+                <p>
+                  <i class="fa fa-user-plus" style="color: #1890ff;"></i>
+                  <span>新用户 <strong>李小四</strong> 注册</span>
+                </p>
+              </div>
+            </li>
+            <li class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis"></i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">2023-06-15 14:25</h3>
+                <p>
+                  <i class="fa fa-shopping-cart" style="color: #faad14;"></i>
+                  <span>订单 <strong>ORD-2023-8765</strong> 已支付</span>
+                </p>
+              </div>
+            </li>
+            <li class="layui-timeline-item">
+              <i class="fa fa-file-text-o layui-timeline-axis" style="font-family: FontAwesome;"></i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">2023-06-15 11:10</h3>
+                <p>
+                  <i class="fa fa-file-text-o" style="color: #52c41a;"></i>
+                  <span>发布了新文章 <strong>《系统使用指南》</strong></span>
+                </p>
+              </div>
+            </li>
+            <li class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis"></i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">2023-06-15 09:23</h3>
+                <p>
+                  <i class="fa fa-sign-in" style="color: #ff4d4f;"></i>
+                  <span>管理员登录系统</span>
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- 系统状态 -->
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <h3><i class="fa fa-server"></i> 系统状态</h3>
+        </div>
+        <div class="layui-card-body">
+          <div class="layui-elem-quote">
+            <p><i class="fa fa-microchip" style="color: #1890ff;"></i> CPU 使用率：32%</p>
+            <div class="layui-progress" lay-showpercent="yes">
+              <div class="layui-progress-bar" lay-percent="32%"></div>
+            </div>
+          </div>
+          <div class="layui-elem-quote">
+            <p><i class="fa fa-memory" style="color: #52c41a;"></i> 内存使用率：65%</p>
+            <div class="layui-progress" lay-showpercent="yes">
+              <div class="layui-progress-bar" lay-percent="65%"></div>
+            </div>
+          </div>
+          <div class="layui-elem-quote">
+            <p><i class="fa fa-hdd-o" style="color: #faad14;"></i> 磁盘使用率：48%</p>
+            <div class="layui-progress" lay-showpercent="yes">
+              <div class="layui-progress-bar" lay-percent="48%"></div>
+            </div>
+          </div>
+          <div class="layui-elem-quote">
+            <p><i class="fa fa-wifi" style="color: #ff4d4f;"></i> 网络状态：正常</p>
+            <div class="layui-progress" lay-showpercent="yes">
+              <div class="layui-progress-bar" lay-percent="100%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入Layui JS和ECharts -->
+  <script src="../lib/layui-v2.6.3/layui.js"></script>
+  <script src="../js/lay-module/echarts/echarts.js"></script>
+  <script>
+    // 初始化Layui模块
+    layui.use(['element', 'layer'], function(){
+      var element = layui.element;
+      var layer = layui.layer;
+      
+      // 渲染进度条
+      element.render('progress');
+      
+      // 检查ECharts是否加载成功
+      if (typeof echarts === 'undefined') {
+        document.getElementById('chartLoading').innerHTML = '<i class="layui-icon layui-icon-error" style="font-size: 30px; color: #ff4d4f;"></i><span style="margin-left: 10px; color: #ff4d4f;">图表加载失败，请刷新页面重试</span>';
+        layer.error('ECharts加载失败，请检查网络连接');
+        return;
+      }
+      
+      // 检查图表容器是否存在
+      var chartContainer = document.getElementById('mainChart');
+      if (!chartContainer) {
+        layer.error('未找到图表容器');
+        return;
+      }
+      
+      // 初始化图表
+      try {
+        var mainChart = echarts.init(chartContainer);
+        
+        // 图表配置
+        var option = {
+          title: {
+            text: '近7日数据统计',
+            left: 'center'
+          },
+          tooltip: {
+            trigger: 'axis'
+          },
+          legend: {
+            data: ['用户数', '订单数', '访问量'],
+            bottom: 0
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '15%',
+            top: '15%',
+            containLabel: true
+          },
+          xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: ['6/9', '6/10', '6/11', '6/12', '6/13', '6/14', '6/15']
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [
+            {
+              name: '用户数',
+              type: 'line',
+              stack: '总量',
+              data: [120, 132, 101, 134, 90, 230, 210]
+            },
+            {
+              name: '订单数',
+              type: 'line',
+              stack: '总量',
+              data: [220, 182, 191, 234, 290, 330, 310]
+            },
+            {
+              name: '访问量',
+              type: 'line',
+              stack: '总量',
+              data: [1500, 1232, 1401, 1834, 1990, 2300, 2180]
+            }
+          ]
+        };
+        
+        // 使用配置项显示图表
+        mainChart.setOption(option);
+        
+        // 隐藏加载提示
+        document.getElementById('chartLoading').style.display = 'none';
+        
+        // 窗口大小改变时，重绘图表
+        window.addEventListener('resize', function() {
+          mainChart.resize();
+        });
+        
+      } catch (error) {
+        console.error('图表初始化失败:', error);
+        document.getElementById('chartLoading').innerHTML = '<i class="layui-icon layui-icon-error" style="font-size: 30px; color: #ff4d4f;"></i><span style="margin-left: 10px; color: #ff4d4f;">图表初始化失败: ' + error.message + '</span>';
+        layer.error('图表初始化失败: ' + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
+    

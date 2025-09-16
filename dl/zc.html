@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用户注册 - 系统平台</title>
+  <!-- 引入Layui CSS -->
+  <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css">
+  <!-- 引入Font Awesome -->
+  <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.css">
+  
+  <style>
+    body {
+      background-color: #f5f7fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .register-container {
+      display: flex;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .register-card {
+      width: 100%;
+      max-width: 420px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    
+    .register-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .register-header {
+      padding: 30px 25px;
+      background: linear-gradient(135deg, #1E9FFF, #009688);
+      color: #fff;
+      text-align: center;
+    }
+    
+    .register-header h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    
+    .register-header p {
+      margin-top: 8px;
+      opacity: 0.9;
+      font-size: 14px;
+    }
+    
+    .register-body {
+      padding: 30px 25px;
+    }
+    
+    .layui-form-item {
+      margin-bottom: 20px;
+    }
+    
+    .layui-form-label {
+      width: 48px;
+      padding: 9px 0;
+      text-align: center;
+      color: #666;
+    }
+    
+    .layui-input-block {
+      margin-left: 48px;
+    }
+    
+    .layui-input, .layui-select, .layui-textarea {
+      height: 42px;
+      border-radius: 6px;
+      border-color: #e5e6eb;
+      transition: all 0.2s ease;
+    }
+    
+    .layui-input:focus, .layui-select:focus, .layui-textarea:focus {
+      border-color: #1E9FFF;
+      box-shadow: 0 0 0 2px rgba(30, 159, 255, 0.1);
+    }
+    
+    .layui-btn {
+      width: 100%;
+      height: 44px;
+      font-size: 16px;
+      border-radius: 6px;
+      background-color: #1E9FFF;
+      border-color: #1E9FFF;
+      transition: all 0.3s ease;
+    }
+    
+    .layui-btn:hover {
+      background-color: #009688;
+      border-color: #009688;
+      transform: translateY(-2px);
+    }
+    
+    .register-footer {
+      padding: 0 25px 25px;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .register-footer a {
+      color: #1E9FFF;
+      margin-left: 5px;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    
+    .register-footer a:hover {
+      color: #009688;
+      text-decoration: underline;
+    }
+    
+    .verify-code {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .verify-code .layui-input {
+      flex: 1;
+    }
+    
+    .verify-code-btn {
+      width: 110px;
+      white-space: nowrap;
+    }
+    
+    .icon-container {
+      position: relative;
+    }
+    
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #999;
+      transition: color 0.2s;
+    }
+    
+    .toggle-password:hover {
+      color: #1E9FFF;
+    }
+    
+    @media (max-width: 768px) {
+      .register-card {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+      
+      .register-header, .register-body {
+        padding: 20px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <div class="register-card">
+      <div class="register-header">
+        <h2><i class="fa fa-user-plus mr-2"></i>用户注册</h2>
+        <p>创建新账户，开启全新体验</p>
+      </div>
+      
+      <div class="register-body">
+        <form class="layui-form" lay-filter="registerForm">
+          <div class="layui-form-item">
+            <label class="layui-form-label"><i class="fa fa-user"></i></label>
+            <div class="layui-input-block">
+              <input type="text" name="username" lay-verify="required|username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          
+          <div class="layui-form-item">
+            <label class="layui-form-label"><i class="fa fa-envelope"></i></label>
+            <div class="layui-input-block">
+              <input type="text" name="email" lay-verify="required|email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          
+          <div class="layui-form-item">
+            <label class="layui-form-label"><i class="fa fa-lock"></i></label>
+            <div class="layui-input-block icon-container">
+              <input type="password" name="password" id="password" lay-verify="required|pass" placeholder="请输入密码" autocomplete="off" class="layui-input">
+              <i class="fa fa-eye toggle-password" id="togglePassword"></i>
+            </div>
+          </div>
+          
+          <div class="layui-form-item">
+            <label class="layui-form-label"><i class="fa fa-lock"></i></label>
+            <div class="layui-input-block icon-container">
+              <input type="password" name="repassword" id="repassword" lay-verify="required|pass|repassword" placeholder="请确认密码" autocomplete="off" class="layui-input">
+              <i class="fa fa-eye toggle-password" id="toggleRePassword"></i>
+            </div>
+          </div>
+          
+          <div class="layui-form-item">
+            <label class="layui-form-label"><i class="fa fa-mobile"></i></label>
+            <div class="layui-input-block">
+              <input type="text" name="phone" lay-verify="required|phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          
+          <div class="layui-form-item">
+            <label class="layui-form-label"><i class="fa fa-shield"></i></label>
+            <div class="layui-input-block verify-code">
+              <input type="text" name="verifyCode" lay-verify="required|verifyCode" placeholder="请输入验证码" autocomplete="off" class="layui-input">
+              <button type="button" class="layui-btn layui-btn-primary verify-code-btn" id="getVerifyCode">获取验证码</button>
+            </div>
+          </div>
+          
+          <div class="layui-form-item">
+            <div class="layui-input-block" style="margin-left: 0;">
+              <input type="checkbox" name="agreement" lay-skin="primary" lay-verify="required" title="我已阅读并同意《用户协议》和《隐私政策》">
+            </div>
+          </div>
+          
+          <div class="layui-form-item">
+            <div class="layui-input-block" style="margin-left: 0;">
+              <button class="layui-btn" lay-submit lay-filter="registerBtn"><i class="fa fa-check mr-1"></i>立即注册</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      <div class="register-footer">
+        已有账号？<a href="login.html">立即登录</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入Layui JS -->
+  <script src="../lib/layui-v2.6.3/layui.js"></script>
+  
+  <script>
+    layui.use(['form', 'layer'], function() {
+      var form = layui.form;
+      var layer = layui.layer;
+      
+      // 自定义验证规则
+      form.verify({
+        username: function(value) {
+          if (value.length < 4 || value.length > 16) {
+            return '用户名长度必须在4-16个字符之间';
+          }
+          if (!/^[a-zA-Z0-9_]+$/.test(value)) {
+            return '用户名只能包含字母、数字和下划线';
+          }
+        },
+        pass: function(value) {
+          if (value.length < 6) {
+            return '密码长度不能少于6位';
+          }
+          if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/.test(value)) {
+            return '密码必须包含大小写字母和数字';
+          }
+        },
+        repassword: function(value) {
+          var password = document.getElementsByName('password')[0].value;
+          if (value !== password) {
+            return '两次输入的密码不一致';
+          }
+        },
+        verifyCode: function(value) {
+          if (value.length !== 6) {
+            return '验证码长度必须为6位';
+          }
+          if (!/^\d+$/.test(value)) {
+            return '验证码只能是数字';
+          }
+        }
+      });
+      
+      // 监听注册提交
+      form.on('submit(registerBtn)', function(data) {
+        // 模拟注册请求
+        layer.load(2);
+        
+        setTimeout(function() {
+          layer.closeAll('loading');
+          layer.msg('注册成功！即将跳转到登录页面...', {
+            icon: 1,
+            time: 2000
+          }, function() {
+            // 实际应用中这里应该跳转到登录页面
+            console.log('注册信息:', data.field);
+            window.location.href = '../dl/dneglu.html';
+          });
+        }, 1500);
+        
+        return false;
+      });
+      
+      // 密码显示/隐藏切换
+      document.getElementById('togglePassword').addEventListener('click', function() {
+        togglePasswordVisibility('password', this);
+      });
+      
+      document.getElementById('toggleRePassword').addEventListener('click', function() {
+        toggleRePasswordVisibility('repassword', this);
+      });
+      
+      function togglePasswordVisibility(inputId, iconElement) {
+        var input = document.getElementById(inputId);
+        var type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+        input.setAttribute('type', type);
+        
+        // 切换图标
+        if (type === 'password') {
+          iconElement.classList.remove('fa-eye-slash');
+          iconElement.classList.add('fa-eye');
+        } else {
+          iconElement.classList.remove('fa-eye');
+          iconElement.classList.add('fa-eye-slash');
+        }
+      }
+      
+      // 验证码倒计时
+      var countdown = 60;
+      document.getElementById('getVerifyCode').addEventListener('click', function() {
+        var phone = document.getElementsByName('phone')[0].value;
+        var phoneVerify = form.validate('phone', phone);
+        
+        if (!phoneVerify) {
+          layer.tips('请输入正确的手机号', '[name="phone"]', {
+            tips: [2, '#FF5722'],
+            time: 2000
+          });
+          return;
+        }
+        
+        var btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '重新发送(' + countdown + ')';
+        
+        var timer = setInterval(function() {
+          countdown--;
+          btn.innerHTML = '重新发送(' + countdown + ')';
+          
+          if (countdown <= 0) {
+            clearInterval(timer);
+            btn.innerHTML = '获取验证码';
+            btn.disabled = false;
+            countdown = 60; // 重置倒计时
+          }
+        }, 1000);
+        
+        // 模拟发送验证码
+        layer.msg('验证码已发送到您的手机', {icon: 1, time: 1500});
+      });
+    });
+  </script>
+</body>
+</html>

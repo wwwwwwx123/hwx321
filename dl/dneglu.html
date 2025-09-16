@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>账户登录 - 高端管理系统</title>
+  <!-- 引入Layui CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/layui-src/dist/css/layui.css" media="all">
+  <!-- 引入Font Awesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      height: 100vh;
+      overflow: hidden;
+      background-color: #0f172a;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    /* 背景设计 */
+    .bg-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+    }
+    
+    .bg-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+        radial-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+      background-position: 0 0, 25px 25px;
+      animation: movePattern 20s linear infinite;
+    }
+    
+    .bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.3;
+    }
+    
+    .circle-1 {
+      width: 600px;
+      height: 600px;
+      top: -200px;
+      left: -100px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      animation: float 30s ease-in-out infinite;
+    }
+    
+    .circle-2 {
+      width: 500px;
+      height: 500px;
+      bottom: -150px;
+      right: -100px;
+      background: linear-gradient(135deg, #ec4899, #6366f1);
+      animation: float 25s ease-in-out infinite;
+    }
+    
+    /* 登录容器 */
+    .login-container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      box-shadow: 0 10px 50px -12px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .login-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 60px -12px rgba(0, 0, 0, 0.4);
+    }
+    
+    .login-header {
+      padding: 30px 30px 15px;
+      text-align: center;
+    }
+    
+    .login-logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+    }
+    
+    .login-logo i {
+      font-size: 40px;
+      color: white;
+    }
+    
+    .login-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 8px;
+    }
+    
+    .login-desc {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    
+    .login-body {
+      padding: 15px 30px 30px;
+    }
+    
+    .layui-form-item {
+      margin-bottom: 20px;
+    }
+    
+    .layui-form-label {
+      color: #e2e8f0;
+      padding: 9px 15px;
+      width: auto;
+    }
+    
+    .layui-input-inline {
+      width: calc(100% - 60px);
+    }
+    
+    .layui-input, .layui-select, .layui-textarea {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      color: #e2e8f0;
+      border-radius: 6px;
+      height: 42px;
+      transition: all 0.3s ease;
+    }
+    
+    .layui-input:focus, .layui-select:focus, .layui-textarea:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+    }
+    
+    .layui-btn {
+      width: 100%;
+      height: 44px;
+      font-size: 16px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      border: none;
+    }
+    
+    .layui-btn:hover {
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+    
+    .login-footer {
+      padding: 0 30px 30px;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .login-footer a {
+      color: #94a3b8;
+      font-size: 13px;
+      transition: color 0.3s ease;
+    }
+    
+    .login-footer a:hover {
+      color: #60a5fa;
+    }
+    
+    /* 动画效果 */
+    @keyframes movePattern {
+      0% {
+        background-position: 0 0, 25px 25px;
+      }
+      100% {
+        background-position: 50px 50px, 75px 75px;
+      }
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-30px) rotate(5deg);
+      }
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+    }
+    
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+      .login-card {
+        max-width: 360px;
+      }
+      
+      .circle-1, .circle-2 {
+        filter: blur(70px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 背景设计 -->
+  <div class="bg-container">
+    <div class="bg-pattern"></div>
+    <div class="bg-circle circle-1"></div>
+    <div class="bg-circle circle-2"></div>
+  </div>
+  
+  <!-- 登录容器 -->
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="login-logo">
+          <i class="fa fa-shield"></i>
+        </div>
+        <h2 class="login-title">账户登录</h2>
+        <p class="login-desc">请输入您的账号和密码以继续</p>
+      </div>
+      
+      <div class="login-body">
+        <form class="layui-form" lay-filter="loginForm">
+          <div class="layui-form-item">
+            <label class="layui-form-label"><i class="fa fa-user"></i></label>
+            <div class="layui-input-inline">
+              <input type="text" name="username" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          
+          <div class="layui-form-item">
+            <label class="layui-form-label"><i class="fa fa-lock"></i></label>
+            <div class="layui-input-inline">
+              <input type="password" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          
+          <div class="layui-form-item">
+            <div class="layui-input-block" style="margin-left: 0;">
+              <input type="checkbox" name="remember" lay-skin="primary" title="记住我">
+            </div>
+          </div>
+          
+          <div class="layui-form-item">
+            <button class="layui-btn" lay-submit lay-filter="submitLogin">登录</button>
+          </div>
+        </form>
+      </div>
+      
+      <div class="login-footer">
+        <a href="zc.html"">忘记密码?</a>
+        <a href="zc.html"">注册账号</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入Layui JS -->
+  <script src="../lib/layui-v2.6.3/layui.js"></script>
+  <script>
+    // 初始化Layui模块
+    layui.use(['form', 'layer'], function() {
+      var form = layui.form;
+      var layer = layui.layer;
+      
+      // 监听表单提交
+      form.on('submit(submitLogin)', function(data) {
+        // 模拟登录过程
+        layer.load(2, {
+          shade: [0.3, '#0f172a'],
+          time: 1500
+        });
+        
+        // 模拟登录验证
+        setTimeout(function() {
+          // 实际应用中这里会发送登录请求到后端验证
+          if (data.field.username && data.field.password) {
+            layer.msg('登录成功，正在跳转...', {
+              icon: 1,
+              time: 1000
+            }, function() {
+              // 登录成功后的跳转逻辑
+               window.location.href = '../index.html';
+            });
+          } else {
+            layer.msg('请输入用户名和密码', {
+              icon: 2,
+              time: 1500
+            });
+          }
+        }, 1500);
+        
+        return false; // 阻止表单跳转
+      });
+      
+      // 添加输入框动画效果
+      const inputs = document.querySelectorAll('.layui-input');
+      inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+          this.parentElement.classList.add('input-focus');
+        });
+        
+        input.addEventListener('blur', function() {
+          this.parentElement.classList.remove('input-focus');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

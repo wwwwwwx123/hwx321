@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>分步表单</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+    <link rel="stylesheet" href="../js/lay-module/step-lay/step.css"" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <div class="layui-fluid">
+            <div class="layui-card">
+                <div class="layui-card-body" style="padding-top: 40px;">
+                    <div class="layui-carousel" id="stepForm" lay-filter="stepForm" style="margin: 0 auto;">
+                        <div carousel-item>
+                            <div>
+                                <form class="layui-form" style="margin: 0 auto;max-width: 460px;padding-top: 40px;">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">订单ID:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" placeholder="请填写订单ID" class="layui-input" lay-verify="number" required />
+
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">退款金额:</label>
+                                        <div class="layui-input-block">
+                                            <input type="number" placeholder="请填写退款金额" value="" class="layui-input" lay-verify="number" required>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">售后类型:</label>
+                                        <div class="layui-input-block">
+                                            <select lay-verify="required">
+                                                <option value="1" selected>退货</option>
+                                                <option value="2">仅退款</option>
+												<option value="3">换货</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">入款方式:</label>
+                                        <div class="layui-input-block">
+                                            <select lay-verify="required">
+                                                <option value="1" selected>支付宝</option>
+                                                <option value="2">微信</option>
+                                                <option value="3">银行卡</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">备注说明:</label>
+                                        <div class="layui-input-block">
+                                            <textarea placeholder="订单备注" value="" class="layui-textarea"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit lay-filter="formStep">
+                                                &emsp;下一步&emsp;
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <form class="layui-form" style="margin: 0 auto;max-width: 460px;padding-top: 40px;">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">订单ID:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">639537</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">退款余额:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">20.00元</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">退款金额:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">
+                                                <span style="font-size: 18px;color: #333;">20.00元</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">售后类型:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">退货</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">入款方式:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">微信</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">备注说明:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">无</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="button" class="layui-btn layui-btn-primary pre">上一步</button>
+                                            <button class="layui-btn" lay-submit lay-filter="formStep2">
+                                                &emsp;确认入款&emsp;
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <div style="text-align: center;margin-top: 90px;">
+                                    <i class="layui-icon layui-circle"
+                                       style="color: white;font-size:30px;font-weight:bold;background: #52C41A;padding: 20px;line-height: 80px;">&#xe605;</i>
+                                    <div style="font-size: 24px;color: #333;font-weight: 500;margin-top: 30px;">
+                                        入款成功
+                                    </div>
+                                    <div style="font-size: 14px;color: #666;margin-top: 20px;">预计两小时到账</div>
+                                </div>
+                                <div style="text-align: center;margin-top: 50px;">
+                                    <button class="layui-btn next">返回初始页面</button>
+                                    <button class="layui-btn layui-btn-primary">查看账单</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="color: #666;margin-top: 30px;margin-bottom: 40px;padding-left: 30px;">
+                        <h4>售后须知</h4>
+                        <p>退款时，需先确认是否满足基础条件：商品类通常要求收货后7-15天内申请，7天无理由需保证不影响二次销售（包装完好、无使用痕迹），质量问题需提供照片或检测报告；服务类需在有效期内，未使用部分可按比例退款。申请流程一般为“发起申请→平台/商家1-3个工作日审核→通过后退货（商品类需7天内寄回，质量问题商家承担运费，个人原因用户承担）→商家确认→1-7个工作日退款到原支付方式”。需注意，定制商品、已使用虚拟商品（如激活的会员）、拆封食品通常不支持退款，用优惠券购买的商品仅退实际支付金额，部分场景（如临近起飞的机票）可能扣除5%-20%手续费。若退款失败，可检查是否因账户异常，有纠纷优先与客服协商，无果可联系12315投诉。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script>
+    layui.use([ 'form', 'step'], function () {
+        var $ = layui.$,
+            form = layui.form,
+            step = layui.step;
+
+        step.render({
+            elem: '#stepForm',
+            filter: 'stepForm',
+            width: '100%', //设置容器宽度
+            stepWidth: '750px',
+            height: '500px',
+            stepItems: [{
+                title: '填写订单售后需求'
+            }, {
+                title: '确认订单售后需求'
+            }, {
+                title: '完成订单售后'
+            }]
+        });
+
+
+        form.on('submit(formStep)', function (data) {
+            step.next('#stepForm');
+            return false;
+        });
+
+        form.on('submit(formStep2)', function (data) {
+            step.next('#stepForm');
+            return false;
+        });
+
+        $('.pre').click(function () {
+            step.pre('#stepForm');
+        });
+
+        $('.next').click(function () {
+            step.next('#stepForm');
+        });
+    })
+</script>
+</body>
+</html>

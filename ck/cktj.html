@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>首页三</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+    <style>
+        .top-panel {
+            border: 1px solid #eceff9;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .top-panel > .layui-card-body{
+            height: 60px;
+        }
+        .top-panel-number{
+            line-height:60px;
+            font-size: 30px;
+            border-right:1px solid #eceff9;
+        }
+        .top-panel-tips{
+            line-height:30px;
+            font-size: 12px
+        }
+    </style>
+</head>
+<body>
+<!--<div class="layuimini-container">-->
+<div class="layuimini-main">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-xs12 layui-col-md9">
+            <div id="echarts-records" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
+        </div>
+		<div class="layui-col-xs12 layui-col-md3">
+		    <div id="echarts-pies" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
+		</div>
+    </div>
+    
+    
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-xs12 layui-col-md6">
+            <div id="echarts-dataset" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>
+        </div>
+    </div>
+    
+
+
+</div>
+<!--</div>-->
+<script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script>
+    layui.use(['layer', 'echarts'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            echarts = layui.echarts;
+
+        /**
+         * 报表功能
+         */
+        var echartsRecords = echarts.init(document.getElementById('echarts-records'), 'walden');
+
+        var optionRecords = {
+            title: {
+                text: '库存出入库'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
+                }
+            },
+            legend: {
+                data: ['A仓出库', 'A仓入库', 'B仓出库', 'B仓入库', 'C仓出库','C仓入库']
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: 'A仓出库',
+                    type: 'line',
+                    stack: '总量',
+                    areaStyle: {},
+                    data: [120, 132, 1031, 134, 930, 2330, 210]
+                },
+                {
+                    name: 'A仓入库',
+                    type: 'line',
+                    areaStyle: {},
+                    data: [2220, 1822, 1391, 2334, 2930, 3330, 3140]
+                },
+                {
+                    name: 'B仓出库',
+                    type: 'line',
+                    stack: '总量',
+                    areaStyle: {},
+                    data: [1250, 2432, 2021, 1524, 1930, 3340, 4120]
+                },
+                {
+                    name: 'B仓入库',
+                    type: 'line',
+                    stack: '总量',
+                    areaStyle: {},
+                    data: [3220, 3232, 321, 3334, 3940, 3320, 3220]
+                },
+                {
+                    name: 'C仓出库',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
+                    areaStyle: {},
+                    data: [8420, 4932, 9401, 9324, 12940, 13430, 13420]
+                },
+				{
+				    name: 'C仓入库',
+				    type: 'line',
+				    stack: '总量',
+				    label: {
+				        normal: {
+				            show: true,
+				            position: 'top'
+				        }
+				    },
+				    areaStyle: {},
+				    data: [7240, 4342, 7401, 12344, 1420, 5230, 3220]
+				}
+            ]
+        };
+        echartsRecords.setOption(optionRecords);
+
+
+        /**
+         * 玫瑰图表
+         */
+        var echartsPies = echarts.init(document.getElementById('echarts-pies'), 'walden');
+        var optionPies = {
+            title: {
+                text: '仓储类别占比',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['生活用品', '办公用品', '数码产品', '果蔬类', '学习工具']
+            },
+            series: [
+                {
+                    name: '占比',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '60%'],
+                    roseType: 'radius',
+                    data: [
+                        {value: 335, name: '生活用品'},
+                        {value: 310, name: '办公用品'},
+                        {value: 234, name: '数码产品'},
+                        {value: 135, name: '果蔬类'},
+                        {value: 368, name: '学习工具'}
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        echartsPies.setOption(optionPies);
+
+
+        /**
+         * 柱状图
+         */
+        var echartsDataset = echarts.init(document.getElementById('echarts-dataset'), 'walden');
+
+        var optionDataset = {
+            legend: {},
+            tooltip: {},
+            dataset: {
+                dimensions: ['product', '2024', '2025', '2026'],
+                source: [
+                    {product: '第一季度', '2024': 43.3, '2025': 85.8, '2026': 93.7},
+                    {product: '第二季度', '2024': 83.1, '2025': 73.4, '2026': 55.1},
+                    {product: '第三季度', '2024': 86.4, '2025': 65.2, '2026': 82.5},
+                    {product: '第四季度', '2024': 72.4, '2025': 53.9, '2026': 39.1}
+                ]
+            },
+            xAxis: {type: 'category'},
+            yAxis: {},
+            // Declare several bar series, each will be mapped
+            // to a column of dataset.source by default.
+            series: [
+                {type: 'bar'},
+                {type: 'bar'},
+                {type: 'bar'}
+            ]
+        };
+
+        echartsDataset.setOption(optionDataset);
+
+            
+
+
+
+        // echarts 窗口缩放自适应
+        window.onresize = function () {
+            echartsRecords.resize();
+        }
+
+    });
+</script>
+</body>
+</html>

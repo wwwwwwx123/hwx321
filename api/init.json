@@ -1,0 +1,136 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "sy/syjmfb.html"
+  },
+  "logoInfo": {
+    "title": "shoppingmangesystem",
+    "image": "g4595.jpg",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "首页",
+          "href": "sy/syjmfb.html",
+          "icon": "fa fa-home",
+          "target": "_self"
+        },
+        {
+          "title": "商品管理",
+          "href": "",
+          "icon": "fa fa-group",
+          "target": "_self",
+          "child": [
+          {
+            "title": "添加商品",
+            "href": "sp/sptj.html",
+            "icon": "fa fa-plus-square-o",
+            "target": "_self"
+          }, {
+            "title": "查询商品",
+            "href": "sp/cxsp.html",
+            "icon": "fa fa-search",
+            "target": "_self"
+          }
+        ]
+        },
+        {
+          "title": "订单管理",
+          "href": "",
+          "icon": "fa fa-institution",
+          "target": "_self",
+          "child": [
+            {
+              "title": "订单列表",
+              "href": "dd/ddlb.html",
+              "icon": "fa fa-plus-square-o",
+              "target": "_self"
+            }, {
+              "title": "订单售后",
+              "href": "dd/ddsh.html",
+              "icon": "fa fa-plus-circle",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "库存管理",
+          "href": "",
+          "icon": "fa fa-male",
+          "target": "_self",
+          "child": [
+            {
+              "title": "仓库管理",
+              "href": "ck/ckgl.html",
+              "icon": "fa fa-plus-circle",
+              "target": "_self"
+            }, {
+              "title": "库存统计",
+              "href": "ck/cktj.html",
+              "icon": "fa fa-search-plus",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "商家管理",
+          "href": "",
+          "icon": "fa fa-trophy",
+          "target": "_self",
+          "child": [
+            {
+              "title": "添加商家信息",
+              "href": "shangjia/sjtj.html",
+              "icon": "fa fa-plus-square-o",
+              "target": "_self"
+            }, {
+              "title": "查询商家信息",
+              "href": "shangjia/chaxunyonghu.html",
+              "icon": "fa fa-search",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "用户管理",
+          "href": "",
+          "icon": "fa fa-paw",
+          "target": "_self",
+          "child": [
+            {
+              "title": "添加用户",
+              "href": "yonghu/tianjiayonghu.html",
+              "icon": "fa fa-plus-circle",
+              "target": "_self"
+            }, {
+              "title": "查询用户",
+              "href": "yonghu/chaxunyonghu.html",
+              "icon": "fa fa-search-plus",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "管理员中心",
+          "href": "",
+          "icon": "fa fa-eye",
+          "target": "_self",
+          "child": [
+            {
+              "title": "个人中心",
+              "href": "gl/grzx.html",
+              "icon": "fa fa-plus-square-o",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
